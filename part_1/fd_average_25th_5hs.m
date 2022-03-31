@@ -4,10 +4,10 @@ vid = '~/Documents/MATLAB/videos/Video1.mp4';
 
 videoReader1 = VideoReader(vid);
 videoPlayer1 = vision.VideoPlayer('Name', 'Original Video', 'Position', [100, 200, 500, 500]);
-videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=20, hs=5)', 'Position', [1000, 200, 500, 500]);
+videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=25, hs=5)', 'Position', [1000, 200, 500, 500]);
 
 hs = 5;
-th = 20;
+th = 25;
 h_average = fspecial('average', [hs hs]);
 previous_frame = readFrame(videoReader1);
 [My, Nx, Sz] = size(previous_frame);
@@ -52,4 +52,7 @@ while hasFrame(videoReader1)
     videoPlayer1(current_frame);
     videoPlayer2(BGI);
     pause(1/videoReader1.FrameRate);
+    if(i == 320)
+        disp('pause');
+    end
 end

@@ -2,8 +2,10 @@ clear variables;
 close all;
 vid = '~/Documents/MATLAB/videos/Video1.mp4';
 
-videoReader1 = VideoReader(vid); videoPlayer1 = vision.VideoPlayer('Name', 'Original Video', 'Position', [100, 200, 500, 500]); videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=20, hs=2)', 'Position', [1000, 200, 500, 500]);
-% 2 , 20
+videoReader1 = VideoReader(vid);
+videoPlayer1 = vision.VideoPlayer('Name', 'Original Video', 'Position', [100, 200, 500, 500]);
+videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=25, hs=3)', 'Position', [1000, 200, 500, 500]);
+
 hs = 3;
 th = 25;
 h_average = fspecial('average', [hs hs]);
@@ -18,11 +20,9 @@ previous_frame_g = previous_frame_g_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-
 previous_frame_b = previous_frame_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
 
 i = 1;
-j = 1;
-frame_count_averaging = 5;
 while hasFrame(videoReader1)
-   
     BGI=zeros(My,Nx);
+   
     current_frame = readFrame(videoReader1);
     current_frame_r_pad = conv2(h_average, current_frame(:,:,1));
     current_frame_g_pad = conv2(h_average, current_frame(:,:,2));
@@ -40,28 +40,19 @@ while hasFrame(videoReader1)
     BGI(Cmax>th)=255;
     BGI=uint8(BGI);
 
-    frames_vector{j} = double(previous_frame);
-    if(mod(i,frame_count_averaging) == frame_count_averaging)
-        frames_added = zeros(My,Nx,Sz);
-        for n = 1:frame_count_averaging
-            frames_added = frames_added + frames_vector{n};
-        end
-        frames_vector = [];
-        j = 1;
-        previous_frame = uint8(rescale(frames_added/frame_count_averaging,0,255));
-        previous_frame_r_pad = conv2(h_average, previous_frame(:,:,1));
-        previous_frame_g_pad = conv2(h_average, previous_frame(:,:,2));
-        previous_frame_b_pad = conv2(h_average, previous_frame(:,:,3));
-        previous_frame_r = previous_frame_r_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-        previous_frame_g = previous_frame_g_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-        previous_frame_b = previous_frame_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-    end
+    previous_frame = current_frame;
+    previous_frame_r_pad = conv2(h_average, current_frame(:,:,1));
+    previous_frame_g_pad = conv2(h_average, current_frame(:,:,2));
+    previous_frame_b_pad = conv2(h_average, current_frame(:,:,3));
+    previous_frame_r = current_frame_r_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
+    previous_frame_g = current_frame_g_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
+    previous_frame_b = current_frame_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
 
     i = i + 1;
     videoPlayer1(current_frame);
     videoPlayer2(BGI);
     pause(1/videoReader1.FrameRate);
-    if(i == 320)
+    if(i == 50)
         disp('pause');
     end
 end

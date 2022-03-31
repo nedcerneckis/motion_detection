@@ -1,8 +1,10 @@
 clear variables;
 close all;
-vid = '~/Documents/MATLAB/videos/Video1.mp4';
+vid = '~/Documents/MATLAB/videos/Video3.mp4';
 
-videoReader1 = VideoReader(vid); videoPlayer1 = vision.VideoPlayer('Name', 'Original Video', 'Position', [100, 200, 500, 500]); videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=20, hs=2)', 'Position', [1000, 200, 500, 500]);
+videoReader1 = VideoReader(vid); 
+videoPlayer1 = vision.VideoPlayer('Name', 'Original Video', 'Position', [100, 200, 500, 500]); 
+videoPlayer2 = vision.VideoPlayer('Name', 'Smoothed video, average (th=20, hs=2)', 'Position', [1000, 200, 500, 500]);
 % 2 , 20
 hs = 3;
 th = 25;
@@ -19,7 +21,7 @@ previous_frame_b = previous_frame_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-
 
 i = 1;
 j = 1;
-frame_count_averaging = 5;
+frame_count_averaging = 2;
 while hasFrame(videoReader1)
    
     BGI=zeros(My,Nx);

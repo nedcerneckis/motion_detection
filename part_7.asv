@@ -1,0 +1,20 @@
+roi = [100 80 360 240];
+max_obj = 200;
+pts_offset = int32(repmat([roi(1), roi(2), 0, 0], [max_obj 1]));
+
+Video = vision.VideoFileReader;
+Video.Filename = '~/Documents/MATLAB/videos/Video3.mp4'
+
+color_convert = vision.ColorSpaceConverter('Conversion', 'RGB to YCbCr');
+autothreshold = vision.Autothresholder('ThresholdScaleFactor', 1.2);
+closing = vision.MorphologicalClose('Neighborhood', strel('square', 15));
+
+VideoBlob = vision.BlobAnalysis('MaximumCount', max_obj, 'ExcludeBorderBlobs', true);
+VideoBlob.MinimumBlobArea = 100;
+VideoBlob.MaximumBlobArea = 2500;
+Position = [10 300 roi(3)+25 roi(4)+25];
+
+AbandondedObjects = vision.VideoPlayer('Name', 'Abanded Objects', 'Position', Position);
+Position(i) = 46+roi(3);
+AllObjects = vision.VideoPlayer('Name', 'All objects', 'Position', Position);
+Position = [80+2*roi(3) 300 roi(3)-roi(1)+]

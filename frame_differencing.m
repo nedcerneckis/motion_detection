@@ -1,7 +1,7 @@
 clear variables;
 close all;
 
-video1 = '~/Documents/MATLAB/videos/Video1.mp4';
+video1 = '~/Documents/MATLAB/videos/Video2.mp4';
 videoReader1 = VideoReader(video1);
 
 hs = 5;
@@ -54,15 +54,6 @@ while hasFrame(videoReader1)
     previous_frame(:,:,1) = BGI .* current_frame(:,:,1);
     previous_frame(:,:,2) = BGI .* current_frame(:,:,2);
     previous_frame(:,:,3) = BGI .* current_frame(:,:,3);
-
-    if(mod(i, 50) == 0)
-        previous_r_pad = conv2(h_average, previous_frame(:,:,1));
-        previous_g_pad = conv2(h_average, previous_frame(:,:,2));
-        previous_b_pad = conv2(h_average, previous_frame(:,:,3));
-        previous_r = previous_r_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-        previous_g = previous_g_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-        previous_b = previous_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2:Nx+(hs-1)/2);
-    end
    % videoPlayer1(current_frame);
     videoPlayer2(previous_frame);
     i = i + 1;

@@ -22,7 +22,7 @@ bg_r = bg_r_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2 : Nx+(hs-1)/2);
 bg_g = bg_g_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2 : Nx+(hs-1)/2);
 bg_b = bg_b_pad((hs+1)/2 : My+(hs-1)/2, (hs+1)/2 : Nx+(hs-1)/2);
 
-GI = zeros(My, Nx);
+BGI = zeros(My, Nx);
 while hasFrame(videoReader1)
     BGI = zeros(My, Nx);
 
